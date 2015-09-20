@@ -9,9 +9,17 @@
         color: #fff;
       }
 
-      p, h1, h2 {
-        margin: 15px auto;
+      main {
+        margin: auto;
         max-width: 500px;
+      }
+
+      p, h1, h2 {
+        margin: 15px 0;
+      }
+
+      a {
+        color: #fcf;
       }
 
       .bookmark {
@@ -27,56 +35,58 @@
     </style>
   </head>
   <body>
-    <h1>Plug.dj Playlist Exporter</h1>
-    <p>
-      This exports all your plug.dj playlists to YouTube quickly and easily,
-      without copying any video IDs or saving/uploading any files.
-    </p>
+    <main>
+      <h1>Plug.dj Playlist Exporter</h1>
+      <p>
+        This exports all your plug.dj playlists to YouTube quickly and easily,
+        without copying any video IDs or saving/uploading any files.
+      </p>
 
-    <h2>Usage</h2>
-    <p>
-      First, drag the button below to your bookmarks bar. Then, join any room on
-      plug.dj, and press the bookmark once you can see the chat.
-    </p>
-    <p>
-      <a class="bookmark" href="javascript:$.getScript('https://goto-bus-stop.github.io/plugdj-export/index.js');">[Drag this to your bookmarks bar]</a>
-    </p>
-    <p>
-      When you press the bookmark, you'll be prompted to log in to your YouTube
-      account, so the bookmark can create playlists and add songs to them. Once
-      that's done, every one of your playlists will be handled in order
-      automatically.
-    </p>
-    <p>
-      It's important that you don't refresh while the bookmark is running, since
-      it won't have finished adding songs yet. So if you do accidentally
-      refresh and re-run the bookmark, you'll end up with a bunch of duplicate
-      playlists on YouTube. You'll have to manually delete the duplicate
-      playlists in that case. Or leave them be, if you don't mind duplicates!
-    </p>
+      <h2>Usage</h2>
+      <p>
+        First, drag the button below to your bookmarks bar. Then, join any room on
+        plug.dj, and press the bookmark once you can see the chat.
+      </p>
+      <p>
+        <a class="bookmark" href="javascript:$.getScript('https://goto-bus-stop.github.io/plugdj-export/index.js');">[Drag this to your bookmarks bar]</a>
+      </p>
+      <p>
+        When you press the bookmark, you'll be prompted to log in to your YouTube
+        account, so the bookmark can create playlists and add songs to them. Once
+        that's done, every one of your playlists will be handled in order
+        automatically.
+      </p>
+      <p>
+        It's important that you don't refresh while the bookmark is running, since
+        it won't have finished adding songs yet. So if you do accidentally
+        refresh and re-run the bookmark, you'll end up with a bunch of duplicate
+        playlists on YouTube. You'll have to manually delete the duplicate
+        playlists in that case. Or leave them be, if you don't mind duplicates!
+      </p>
 
-    <h2>Alternatives</h2>
-    <p>
-      Several people have built playlist exporting scripts. Some of the popular
-      ones are:
-    </p>
-    <ul>
-      <li>
-        <a href="https://p2y.thedark1337.com">Plug2YouTube</a> - Made by
-        thedark1337.
-        Has been around for a long time. It exports a single playlist at a time,
-        but it's been known to sometimes mix up playlists when multiple people
-        use it simultaneously.
-      </li>
-      <li>
-        <a href="http://pye.sq10.net">PYE</a> - Made by Ivan.
-        It exports all your playlists, similar to this bookmark. It's a bit
-        harder to use, though.
-      </li>
-      <li>
-        <a href="https://docs.google.com/document/d/1_ifpGijzhdjU3XxZ0bvBgFh1L_gcGWhh97wS9SjVs4s/edit">Other</a> -
-        A Google doc on several more playlist importers and other goodies.
-      </li>
-    </ul>
+      <h2>Alternatives</h2>
+      <p>
+        Several people have built playlist exporting scripts. Some of the popular
+        ones are:
+      </p>
+      <ul>
+        <li>
+          <a href="https://p2y.thedark1337.com">Plug2YouTube</a> - Made by
+          thedark1337.
+          Has been around for a long time. It exports a single playlist at a time,
+          but it's been known to sometimes mix up playlists when multiple people
+          use it simultaneously.
+        </li>
+        <li>
+          <a href="http://pye.sq10.net">PYE</a> - Made by Ivan.
+          It exports all your playlists, similar to this bookmark. It's a bit
+          harder to use, though.
+        </li>
+        <li>
+          <a href="https://docs.google.com/document/d/1_ifpGijzhdjU3XxZ0bvBgFh1L_gcGWhh97wS9SjVs4s/edit">Other</a> -
+          A Google doc on several more playlist importers and other goodies.
+        </li>
+      </ul>
+    </main>
   </body>
 </html>
