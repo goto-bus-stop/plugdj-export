@@ -9,7 +9,7 @@ First, add the link below to your bookmarks bar. Then, join any room on
 plug.dj, and press the bookmark once you can see the chat.
 
 ```
-javascript:$.getScript('https://cdn.rawgit.com/goto-bus-stop/plugdj-export/master/index.js');
+javascript:$.getScript('https://rawgit.com/goto-bus-stop/plugdj-export/master/index.js');
 ```
 
 When you press the bookmark, you'll be prompted to log in to your YouTube
