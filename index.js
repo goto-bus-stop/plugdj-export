@@ -148,7 +148,14 @@ function exportPlaylist (playlist) {
     media.forEach(function (item) {
       if (item.format === FORMAT_YT) {
         promise = promise.then(function () {
-          return insertYouTubeItem(playlistId, item)
+          return $.Deferred(function (def) {
+            insertYouTubeItem(playlistId, item)
+              .then(def.resolve)
+              .fail(function (res) {
+                API.chatLog('Could not add "' + item.author + ' - ' + item.title + '". The video might have been deleted.')
+                def.resolve()
+              })
+          })
         })
       } else if (item.format === FORMAT_SC) {
         API.chatLog('Ignoring SoundCloud media "' + item.author + ' - ' + item.title + '" ):')
