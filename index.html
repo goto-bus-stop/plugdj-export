@@ -48,7 +48,7 @@
         plug.dj, and press the bookmark once you can see the chat.
       </p>
       <p>
-        <a class="bookmark" href="javascript:$.getScript('https://cdn.rawgit.com/goto-bus-stop/plugdj-export/master/index.js');">[Drag this to your bookmarks bar]</a>
+        <a class="bookmark" href="javascript:$.getScript('https://cdn.rawgit.com/goto-bus-stop/plugdj-export/master/index.js');">Export Playlists</a>
       </p>
       <p>
         When you press the bookmark, you'll be prompted to log in to your YouTube
@@ -88,5 +88,12 @@
         </li>
       </ul>
     </main>
+
+    <script>
+      var bm = document.getElementsByClassName('bookmark')[0]
+      bm.onclick = function () {
+        alert('Don\'t click this--drag it to your bookmarks bar in the top!')
+      }
+    </script>
   </body>
 </html>
