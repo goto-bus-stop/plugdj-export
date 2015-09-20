@@ -109,7 +109,7 @@ function createYouTubePlaylist (name) {
     part: 'snippet,status',
     resource: {
       snippet: {
-        title: name,
+        title: name.replace(/[<>]/g, ''),
         description: 'Exported from Plug.dj'
       },
       status: {
