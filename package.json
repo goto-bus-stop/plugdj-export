@@ -1,0 +1,11 @@
+{ "name": "plugdj-export"
+, "version": "0.0.0"
+, "description": " Export playlists from plug.dj to SoundCloud and YouTube."
+, "license": "MIT"
+, "repository": "goto-bus-stop/plugdj-export"
+, "author": "René Kooi <rene@kooi.me>"
+, "files": [ "index.js" ]
+, "devDependencies":
+  { "standard": "*" }
+, "scripts":
+  { "test": "standard" } }
