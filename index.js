@@ -195,8 +195,10 @@ function exportPlaylists () {
   promise.fail(function (err) {
     if (typeof err === 'string') {
       API.chatLog('An error occured while exporting playlists: ' + err)
-    } else if (typeof err === 'object') {
+    } else if (typeof err === 'object' && err.message) {
       API.chatLog('An error occured while exporting playlists: ' + err.message)
+    } else if (typeof err === 'object' && err.error) {
+      API.chatLog('An error occured while exporting playlists: ' + err.error.message)
     } else {
       API.chatLog('An unknown error occured while exporting playlists. Aborting ):')
     }
