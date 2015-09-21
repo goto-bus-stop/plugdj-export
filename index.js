@@ -1,4 +1,4 @@
-/* global require, $, _, Backbone, gapi, API */
+/* global require, $, _, Backbone, gapi, API, SC */
 
 var FORMAT_YT = 1
 var FORMAT_SC = 2
@@ -104,6 +104,23 @@ function authYouTube () {
   })
 }
 
+function getSoundCloudAuthData () {
+  var sdkLoader = _.find(require.s.contexts._.defined, function (m) {
+    return m && m.cb && m.cb.indexOf('sccallback') > -1
+  })
+  return {
+    client_id: sdkLoader.id,
+    redirect_uri: sdkLoader.cb
+  }
+}
+function authSoundCloud () {
+  return $.Deferred(function (def) {
+    SC.connect(function () {
+      def.resolve()
+    })
+  })
+}
+
 function getYouTubeVideoStatuses (media) {
   var current = []
   var chunks = [ current ]
@@ -111,8 +128,7 @@ function getYouTubeVideoStatuses (media) {
   media.forEach(function (item) {
     if (current.length < 50) {
       current.push(item)
-    }
-    else {
+    } else {
       current = [ item ]
       chunks.push(current)
     }
@@ -169,14 +185,30 @@ function insertYouTubeItem (playlistId, media) {
   }))
 }
 
+function createSoundCloudPlaylist (playlist, media) {
+  var tracks = media.map(function (track) {
+    return { id: track.cid }
+  })
+  return $.Deferred(function (def) {
+    var data = _.extend({
+      playlist: {
+        title: getPlaylistName(playlist),
+        tracks: tracks,
+        sharing: 'private'
+      }
+    }, getSoundCloudAuthData())
+    SC.post('/playlists', data, function (scPlaylist) {
+      def.resolve(scPlaylist)
+    })
+  })
+}
+
 function exportPlaylist (playlist) {
   var playlistId = null
   var promise = createYouTubePlaylist(getPlaylistName(playlist))
-    .then(function (res) {
-      console.log(res)
-      playlistId = res.result.id
-    })
+    .then(function (res) { playlistId = res.result.id })
   return function (media) {
+    var sounds = []
     // find YT video status, so we can ignore deleted videos
     promise = promise.then(function () {
       return getYouTubeVideoStatuses(media)
@@ -205,14 +237,24 @@ function exportPlaylist (playlist) {
             })
           })
         } else if (item.format === FORMAT_SC) {
-          API.chatLog('Ignoring SoundCloud media "' + item.author + ' - ' + item.title + '" ):')
+          sounds.push(item)
         }
       })
       return promise
     })
 
     promise = promise.then(function () {
-      return playlistId
+      if (sounds.length > 0) {
+        return createSoundCloudPlaylist(playlist, sounds)
+      }
+    })
+
+    promise = promise.then(function (res) {
+      if (res) {
+        return { youtube: playlistId, soundcloud: res.permalink_url }
+      } else {
+        return { youtube: playlistId }
+      }
     })
 
     return promise
@@ -222,9 +264,15 @@ function exportPlaylist (playlist) {
 function exportPlaylists () {
   var playlists = getPlaylists().map(function (p) { return p.toJSON() })
 
-  API.chatLog('Waiting for YouTube authentication...')
+  API.chatLog('Waiting for YouTube and SoundCloud authentication...')
   API.chatLog('If nothing happens, please check your browser address bar to see if any popups have been blocked.')
-  var promise = authYouTube().then(function () {
+  var promise = authYouTube()
+
+  promise = promise.then(function () {
+    return authSoundCloud()
+  })
+
+  promise = promise.then(function () {
     API.chatLog('Exporting ' + playlists.length + ' playlists...')
     API.chatLog('Please do not refresh until all playlists are exported.')
   })
@@ -236,9 +284,15 @@ function exportPlaylists () {
       API.chatLog('Exporting ' + playlist.name + ' (' + playlist.count + ' songs - ETA ' + toEta(eta) + ')')
       return fetchPlaylist(id)
         .then(exportPlaylist(playlist))
-        .then(function (id) {
-          var url = 'https://youtube.com/playlist?list=' + id
-          API.chatLog('Finished exporting ' + playlist.name + ': ' + url)
+        .then(function (ids) {
+          API.chatLog('Finished exporting ' + playlist.name + '.')
+          if (ids.youtube) {
+            var url = 'https://youtube.com/playlist?list=' + ids.youtube
+            API.chatLog('YouTube playlist: ' + url)
+          }
+          if (ids.soundcloud) {
+            API.chatLog('SoundCloud set: ' + ids.soundcloud)
+          }
         })
         .then(wait(5000))
     })
