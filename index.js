@@ -462,8 +462,8 @@ function exportPlaylists () {
     })
   })
 
-  API.chatLog('Beware, this script is _really_ spammy in the chat.')
-  API.chatLog('You will probably not be able to use the chat well while the script is exporting playlists.')
+  API.chatLog('Beware, this script dumps a lot of information in your chat box.' +
+              'You will probably not be able to use the chat well while the script is exporting playlists.')
 }
 
 exportPlaylists()
