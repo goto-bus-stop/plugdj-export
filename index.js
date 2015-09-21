@@ -104,6 +104,38 @@ function authYouTube () {
   })
 }
 
+function getYouTubeVideoStatuses (media) {
+  var current = []
+  var chunks = [ current ]
+  media = media.filter(function (m) { return m.format === FORMAT_YT })
+  media.forEach(function (item) {
+    if (current.length < 50) {
+      current.push(item)
+    }
+    else {
+      current = [ item ]
+      chunks.push(current)
+    }
+  })
+
+  var videos = []
+  return chunks
+    .reduce(function (promise, chunk) {
+      return promise.then(function (res) {
+        if (res) {
+          videos = videos.concat(res.result.items)
+        }
+        return toJQueryDeferred(gapi.client.youtube.videos.list({
+          part: 'status',
+          id: chunk.map(function (m) { return m.cid }).join(',')
+        }))
+      })
+    }, resolved())
+    .then(function (res) {
+      return videos.concat(res.result.items)
+    })
+}
+
 function createYouTubePlaylist (name) {
   return toJQueryDeferred(gapi.client.youtube.playlists.insert({
     part: 'snippet,status',
@@ -145,21 +177,38 @@ function exportPlaylist (playlist) {
       playlistId = res.result.id
     })
   return function (media) {
-    media.forEach(function (item) {
-      if (item.format === FORMAT_YT) {
-        promise = promise.then(function () {
-          return $.Deferred(function (def) {
-            insertYouTubeItem(playlistId, item)
-              .then(def.resolve)
-              .fail(function (res) {
-                API.chatLog('Could not add "' + item.author + ' - ' + item.title + '". The video might have been deleted.')
-                def.resolve()
-              })
+    // find YT video status, so we can ignore deleted videos
+    promise = promise.then(function () {
+      return getYouTubeVideoStatuses(media)
+    })
+
+    promise = promise.then(function (videos) {
+      // nested promise for an easy loop!
+      var promise = resolved()
+      media.forEach(function (item) {
+        if (item.format === FORMAT_YT) {
+          // ignore videos that have been terminated / are unavailable
+          var video = _.findWhere(videos, { id: item.cid })
+          if (!video || !video.status || video.status.uploadStatus !== 'processed') {
+            API.chatLog('Could not add "' + item.author + ' - ' + item.title + '". The video might have been deleted.')
+            return
+          }
+
+          promise = promise.then(function () {
+            return $.Deferred(function (def) {
+              insertYouTubeItem(playlistId, item)
+                .then(def.resolve)
+                .fail(function (res) {
+                  API.chatLog('Could not add "' + item.author + ' - ' + item.title + '". The video might have been deleted.')
+                  def.resolve()
+                })
+            })
           })
-        })
-      } else if (item.format === FORMAT_SC) {
-        API.chatLog('Ignoring SoundCloud media "' + item.author + ' - ' + item.title + '" ):')
-      }
+        } else if (item.format === FORMAT_SC) {
+          API.chatLog('Ignoring SoundCloud media "' + item.author + ' - ' + item.title + '" ):')
+        }
+      })
+      return promise
     })
 
     promise = promise.then(function () {
