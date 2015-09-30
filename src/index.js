@@ -59,6 +59,10 @@ function parse (json) {
 }
 
 function renderPlaylists (playlists) {
+  $('.discovered', function (el) {
+    el.classList.add('is-visible')
+  })
+
   var view = new PlaylistView(playlists)
   view.render()
 }

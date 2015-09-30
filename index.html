@@ -8,6 +8,7 @@
         font: 12pt 'Open Sans', 'Roboto', 'sans-serif';
         background: #1b1b1b;
         color: #fff;
+        margin-bottom: 200px;
       }
 
       main {
@@ -32,10 +33,18 @@
         color: #222;
       }
 
-      .playlist-manager {
-        position: relative;
+      .discovered {
+        display: none;
+      }
+      .discovered.is-visible {
+        display: block;
         margin: auto;
         max-width: 1000px;
+      }
+
+      .playlist-manager {
+        position: relative;
+        width: 100%;
         min-height: 500px;
       }
 
@@ -167,9 +176,16 @@
       </p>
     </main>
 
-    <div class="playlist-manager">
-      <div class="playlist-menu"></div>
-      <div class="playlist-panel"></div>
+    <div class="discovered">
+      <h2>Playlists</h2>
+      <p>
+        These may not be all your playlists: plug.dj only stored the ones that
+        you accessed at least once.
+      </p>
+      <div class="playlist-manager">
+        <div class="playlist-menu"></div>
+        <div class="playlist-panel"></div>
+      </div>
     </div>
 
     <!-- For parsing the localStorage database file and getting the right stuff -->
