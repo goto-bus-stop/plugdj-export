@@ -5,7 +5,13 @@
 , "repository": "goto-bus-stop/plugdj-export"
 , "author": "René Kooi <rene@kooi.me>"
 , "files": [ "index.js" ]
+, "dependencies":
+  { "buffer": "^3.5.0"
+  , "lz-string": "^1.4.4"
+  , "sql.js": "^0.2.21" }
 , "devDependencies":
-  { "standard": "*" }
+  { "browserify": "^11.2.0"
+  , "standard": "*" }
 , "scripts":
-  { "test": "standard" } }
+  { "build": "cat src/*.js > export.js"
+  , "test": "standard" } }

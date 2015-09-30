@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <title>Plug.dj Playlist Export</title>
     <style>
       body {
@@ -11,7 +12,7 @@
 
       main {
         margin: auto;
-        max-width: 500px;
+        max-width: 700px;
       }
 
       p, h1, h2 {
@@ -22,79 +23,164 @@
         color: #fcf;
       }
 
-      .bookmark {
+      code {
+        font-size: 10pt;
         display: block;
+        border-radius: 3px;
+        padding: 3px;
+        background: #eee;
+        color: #222;
+      }
+
+      .playlist-manager {
+        position: relative;
+        margin: auto;
+        max-width: 1000px;
+        min-height: 500px;
+      }
+
+      .playlist-menu {
+        position: absolute;
+        overflow-y: scroll;
+        height: 100%;
+        width: 300px;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        background: #303036;
+      }
+
+      .playlist-row {
+        height: 30px;
+        line-height: 30px;
+        padding: 0 10px;
+        cursor: pointer;
+      }
+      .playlist-row.is-selected {
+        font-weight: bold;
+      }
+
+      .playlist-panel {
+        position: absolute;
+        overflow-y: scroll;
+        height: 100%;
+        left: 300px;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        background: #2b2b2b;
+      }
+
+      .media-row {
+        height: 50px;
+        line-height: 50px;
+        clear: both;
+      }
+
+      .media-thumb {
+        float: left;
+        width: 90px;
+        height: 40px;
+        margin: 5px;
         text-align: center;
-        border-radius: 5px;
-        background: #fcf;
-        color: #1b1b1b;
-        text-decoration: none;
-        padding: 10px;
-        margin: 10px 0;
+      }
+      .media-thumb img {
+        max-height: 100%;
+      }
+      .media-title {
+        height: 100%;
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>Plug.dj Playlist Exporter</h1>
+      <h1>Plug.dj Playlist Exporter (Post-Apocalypse)</h1>
       <p>
-        This exports all your plug.dj playlists to YouTube <em>and SoundCloud</em>
-        quickly and easily, without copying any video IDs or saving/uploading
-        any files.
+        This exports all your plug.dj playlists to YouTube and SoundCloud
+        quickly and easily, using files found in your browser cache.
       </p>
 
-      <h2>Usage</h2>
+      <h2>How To</h2>
       <p>
-        First, drag the button below to your bookmarks bar. Then, join any room on
-        plug.dj, and press the bookmark once you can see the chat.
+        This script uses stored data from your browser cache to extract your
+        plug.dj playlists, so you'll have to upload the relevant file for your
+        system and browser. Below are the file paths for supported systems.
       </p>
       <p>
-        <a class="bookmark" href="javascript:(function(){$.getScript('https://rawgit.com/goto-bus-stop/plugdj-export/master/index.js');}()); ">Export Playlists</a>
+        If you cannot locate any of these files, it most likely means that your
+        browser cache has been cleared recently. Unfortunately, you will
+        <em>not</em> be able to export your playlists in that case. ):
       </p>
-      <p>
-        When you press the bookmark, you'll be prompted to log in to your YouTube
-        and SoundCloud accounts, so the bookmark can create playlists and add
-        songs to them. Once that's done, every one of your playlists will be
-        handled in order automatically.
-      </p>
-      <p>
-        It's important that you don't refresh while the bookmark is running, since
-        it won't have finished adding songs yet. So if you do accidentally
-        refresh and re-run the bookmark, you'll end up with a bunch of duplicate
-        exported playlists. You'll have to manually delete the duplicate
-        playlists in that case. Or leave them be, if you don't mind duplicates!
-      </p>
-
-      <h2>Alternatives</h2>
-      <p>
-        Several people have built playlist exporting scripts. Some of the popular
-        ones are:
-      </p>
-      <ul>
-        <li>
-          <a href="https://p2y.thedark1337.com">Plug2YouTube</a> - Made by
-          thedark1337.
-          Has been around for a long time. It exports a single playlist at a time,
-          but it's been known to sometimes mix up playlists when multiple people
-          use it simultaneously. YouTube only.
+      <h3>Windows</h3>
+      <ul data-system="windows">
+        <li data-browser="chrome">
+          Google Chrome:
+          <code>%AppData%\Local\Google\Chrome\User Data\<span class="profile">&lt;PROFILE&gt;</span>\Local Storage\https_plug.dj_0.localstorage</code>
+        </li>
+        <li data-browser="chromium">
+          Chromium: <code>%AppData%\Local\Chromium\User Data\<span class="profile">&lt;PROFILE&gt;</span>\Local Storage\https_plug.dj_0.localstorage</code>
         </li>
         <li>
-          <a href="http://pye.sq10.net">PYE</a> - Made by Ivan.
-          It exports all your playlists, similar to this bookmark. It's a bit
-          harder to use, though. SoundCloud support is coming soon, apparently!
-        </li>
-        <li>
-          <a href="https://docs.google.com/document/d/1_ifpGijzhdjU3XxZ0bvBgFh1L_gcGWhh97wS9SjVs4s/edit">Other</a> -
-          A Google doc on several more playlist importers and other goodies.
+          Fi data-browser="firefox"refox:
+          <code>%AppData%\Roaming\Mozilla\Firefox\Profiles\<span class="profile">&lt;PROFILE&gt;</span>\webappsstore.sqlite</code>
         </li>
       </ul>
+
+      <h3>OS X</h3>
+      <ul data-system="osx">
+        <li data-browser="chrome">
+          Google Chrome:
+          <code>~/Library/Application Support/Google/Chrome/<span class="profile">&lt;PROFILE&gt;</span>/Local Storage/https_plug.dj_0.localstorage</code>
+        </li>
+        <li data-browser="chromium">
+          Chromium:
+          <code>~/Library/Application Support/Chromium/<span class="profile">&lt;PROFILE&gt;</span>/Local Storage/https_plug.dj_0.localstorage</code>
+        </li>
+        <li data-browser="firefox">
+          Firefox:
+          <code>~/.mozilla/firefox/<span class="profile">&lt;PROFILE&gt;</span>/webappsstore.sqlite</code>
+        </li>
+      </ul>
+
+      <h3>Linux</h3>
+      <ul data-system="linux">
+        <li data-browser="chrome">
+          Google Chrome:
+          <code>~/.config/google-chrome/ &lt;PROFILE&gt; /Local Storage/https_plug.dj_0.localstorage</code>
+        </li>
+        <li data-browser="chromium">
+          Chromium:
+          <code>~/.config/chromium/<span class="profile">&lt;PROFILE&gt;</span>/Local Storage/https_plug.dj_0.localstorage</code>
+        </li>
+        <li data-browser="firefox">
+          Firefox:
+          <code>~/Library/Application Support/Firefox/Profiles/<span class="profile">&lt;PROFILE&gt;</span>/webappsstore.sqlite</code>
+        </li>
+      </ul>
+
+      <h2>Export</h2>
+      <p>
+        Select your playlist file here to start:
+      </p>
+      <p>
+        <input type="file" id="playlist-file">
+      </p>
     </main>
 
+    <div class="playlist-manager">
+      <div class="playlist-menu"></div>
+      <div class="playlist-panel"></div>
+    </div>
+
+    <!-- For parsing the localStorage database file and getting the right stuff -->
+    <script src="https://cdn.rawgit.com/kripken/sql.js/master/js/sql.js"></script>
+    <!-- For converting the ArrayBuffer returned by sql.js to a UCS-2 encoded string -->
+    <script src="./lib/Buffer.js"></script>
+    <!-- For decompressing localStorage from a UCS-2 encoded string -->
+    <script src="https://cdn.rawgit.com/pieroxy/lz-string/master/libs/lz-string.min.js"></script>
+    <script src="export.js"></script>
     <script>
-      var bm = document.getElementsByClassName('bookmark')[0]
-      bm.onclick = function () {
-        alert('Don\'t click this--drag it to your bookmarks bar in the top!')
-      }
+      init()
     </script>
   </body>
 </html>
