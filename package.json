@@ -6,6 +6,6 @@
 , "author": "René Kooi <rene@kooi.me>"
 , "files": [ "index.js" ]
 , "devDependencies":
-  { "standard": "*" }
+  { "standard": ">=9.0.0" }
 , "scripts":
   { "test": "standard" } }
